@@ -9,7 +9,11 @@
     <packaging>jar</packaging>
     <name>lab-api</name>
     <description>Spring Boot Lab API</description>
-
+    <properties>
+        <!-- Chỉ định version của Java -->
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -32,6 +36,14 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <release>17</release>  <!-- Đảm bảo biên dịch với Java 17 -->
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -1,20 +1,23 @@
-# Bước 1: Sử dụng Maven image để build ứng dụng Java
-FROM maven:3.8.4-openjdk-11-slim AS build
+# Sử dụng image Java 17 từ OpenJDK
+FROM openjdk:17-jdk-slim
 
-# Bước 2: Thiết lập thư mục làm việc trong container
+# Cài đặt Maven
+RUN apt-get update && apt-get install -y maven
+
+# Sao chép mã nguồn của bạn vào container
+COPY . /app
+
+# Thiết lập thư mục làm việc
 WORKDIR /app
 
-# Bước 3: Copy mã nguồn vào container
-COPY . .
-
-# Bước 4: Chạy lệnh Maven để build ứng dụng (tạo file .jar)
+# Chạy Maven build
 RUN mvn clean install
 
-# Bước 5: Sử dụng image OpenJDK để chạy ứng dụng
-FROM openjdk:11-jre-slim
+# Mở port cho ứng dụng nếu cần
+EXPOSE 8080
 
-# Bước 6: Copy file .jar đã build từ container trước đó
-COPY --from=build /app/target/lab-api-0.0.1-SNAPSHOT.jar /app/lab-api.jar
+# Chạy ứng dụng của bạn (cập nhật lệnh này theo ứng dụng của bạn)
+CMD ["java", "-jar", "target/lab-api-0.0.1-SNAPSHOT.jar"]
+RUN java -version
+RUN mvn -v
 
-# Bước 7: Chạy ứng dụng Java khi container khởi động
-ENTRYPOINT ["java", "-jar", "/app/lab-api.jar"]
